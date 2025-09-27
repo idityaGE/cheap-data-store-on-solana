@@ -3,7 +3,7 @@ use anchor_lang::prelude::*;
 declare_id!("Eat4KMevMCmwhQmmVaZcVJgfE2Uye9jarAHkctM3171Y");
 
 #[program]
-mod cheap_data_store {
+mod idk {
     use super::*;
 
     pub fn initialize_db(ctx: Context<UserInitialize>, datatype: String) -> Result<()> {

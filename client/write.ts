@@ -1,6 +1,6 @@
 import * as anchor from '@coral-xyz/anchor'
 import * as web3 from "@solana/web3.js";
-import type { CheapDataStore } from "../target/types/cheap_data_store"
+import type { Idk } from "../target/types/idk"
 import { Program } from '@coral-xyz/anchor'
 
 const wallet = web3.Keypair.fromSecretKey(new Uint8Array([191, 191, 88, 89, 191, 57, 127, 155, 134, 10, 223, 155, 240, 240, 177, 78, 184, 250, 119, 112, 229, 82, 77, 70, 193, 181, 1, 250, 181, 190, 31, 76, 134, 132, 63, 172, 16, 118, 140, 243, 202, 60, 162, 185, 44, 22, 138, 104, 114, 77, 38, 155, 102, 98, 36, 246, 103, 28, 7, 205, 214, 166, 254, 144]))
@@ -10,7 +10,7 @@ const anchorWallet = new anchor.Wallet(wallet)
 const provider = new anchor.AnchorProvider(connection, anchorWallet, {})
 
 anchor.setProvider(provider)
-const program = anchor.workspace.CheapDataStore as Program<CheapDataStore>
+const program = anchor.workspace.CheapDataStore as Program<Idk>
 
 const [dbAccountPda, dbBump] = web3.PublicKey.findProgramAddressSync(
   [Buffer.from("db_account"), wallet.publicKey.toBuffer()],
