@@ -10,7 +10,7 @@ const anchorWallet = new anchor.Wallet(wallet)
 const provider = new anchor.AnchorProvider(connection, anchorWallet, {})
 
 anchor.setProvider(provider)
-const program = anchor.workspace.CheapDataStore as Program<Idk>
+const program = anchor.workspace.Idk as Program<Idk>
 
 const [dbAccountPda, dbBump] = web3.PublicKey.findProgramAddressSync(
   [Buffer.from("db_account"), wallet.publicKey.toBuffer()],
@@ -33,7 +33,7 @@ const init_user = async () => {
     systemProgram: web3.SystemProgram.programId
   }).signers([wallet]).rpc();
 
-  await program.provider.connection.confirmTransaction(txhash);
+  await program.provider.connection.confirmTransaction(txhash, 'confirmed');
 
   console.log("Tx Hash : ", txhash);
 
@@ -67,14 +67,14 @@ const process_one_chunk = async (chunk: string, index: number) => {
     dbAccount: dbAccountPda,
   }).rpc();
 
-  await program.provider.connection.confirmTransaction(txHash);
+  await program.provider.connection.confirmTransaction(txHash, 'confirmed');
 
   const updateTxHash = await program.methods.updateDbAccount(txHash).accounts({
     user: wallet.publicKey,
     dbAccount: dbAccountPda,
   }).rpc();
 
-  await program.provider.connection.confirmTransaction(updateTxHash);
+  await program.provider.connection.confirmTransaction(updateTxHash, 'confirmed');
 
   console.log(`Completed chunk ${index + 1}/${chunks.length}, AddChunk Tx: ${txHash}`);
 }

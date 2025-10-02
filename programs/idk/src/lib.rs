@@ -12,11 +12,11 @@ mod idk {
 
         db.bump = ctx.bumps.db_account;
         db.type_field = datatype;
-        db.offset = 0;
         db.tail_tx = String::new();
-
+        
         data_account.bump = ctx.bumps.data_account;
         data_account.data = String::new();
+        data_account.offset = 0;
         data_account.prev_tx = String::new();
 
         Ok(())
@@ -30,10 +30,11 @@ mod idk {
 
         data_account.data = new_data.clone();
         data_account.prev_tx = prev_tail;
+        data_account.offset += 1;
 
         msg!(
             "CHUNK_ADDED:{}:{}:{}",
-            db.offset,
+            data_account.offset,
             new_data,
             data_account.prev_tx
         );
@@ -42,10 +43,7 @@ mod idk {
 
     pub fn update_db_account(ctx: Context<UpdateDBAccount>, tail_tx: String) -> Result<()> {
         let db = &mut ctx.accounts.db_account;
-
         db.tail_tx = tail_tx;
-        db.offset += 1;
-
         Ok(())
     }
 }
@@ -54,7 +52,6 @@ mod idk {
 pub struct DBAccount {
     pub bump: u8,
     pub type_field: String,
-    pub offset: i64,
     pub tail_tx: String,
 }
 
@@ -62,6 +59,7 @@ pub struct DBAccount {
 pub struct DataAccount {
     pub bump: u8,
     pub data: String,
+    pub offset: i64,
     pub prev_tx: String, // first is "Genesis"
 }
 
@@ -109,4 +107,3 @@ pub struct UpdateDBAccount<'info> {
     #[account(mut)]
     pub db_account: Account<'info, DBAccount>,
 }
-
